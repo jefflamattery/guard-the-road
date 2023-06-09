@@ -12,6 +12,7 @@ public class RandomWalk : MonoBehaviour, IMotionObserver
         get=>_motion;
         set=>_motion = value;
     }
+    
     void Start()
     {
         StartCoroutine(Walk());

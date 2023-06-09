@@ -6,8 +6,8 @@ public class GradientWalk : MonoBehaviour, IFieldObserver, IMotionObserver
 {
     [SerializeField] private FieldObserver _field;
     [SerializeField] private MotionObserver _motion;
-    [SerializeField] private float _meanWalkTime;
-    [SerializeField] private float _minimumWalkTime;
+
+    [SerializeField] private float _speed;
 
     public FieldObserver Field{
         get=>_field;
@@ -39,6 +39,9 @@ public class GradientWalk : MonoBehaviour, IFieldObserver, IMotionObserver
             // update the course using the field, and update the field using the position
             _field.Position = _motion.Position;
             _motion.Course = _field.VectorField;
+            _motion.CourseSpeed = _speed;
+
+
 
             //yield return new WaitForSeconds(Random.Range(_minimumWalkTime, 2f * (_meanWalkTime + _minimumWalkTime) ));
             yield return new WaitForFixedUpdate();

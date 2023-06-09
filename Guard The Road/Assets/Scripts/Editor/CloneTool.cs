@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class CloneTool
 {
-    private static string ENTITIES_FOLDER = "Assets/Scripts/Scriptable Objects/Entities";
+    private static string ENTITIES_FOLDER = "Assets/Scripts/Scriptable Objects/Agents";
 
     [MenuItem("GameObject/Build Observers", false, 0)]
     private static void BuildObservers()
@@ -19,6 +19,7 @@ public class CloneTool
         string name = Selection.activeGameObject.name;
 
         string assetFolder = ENTITIES_FOLDER + "/" + name;
+        
         // create a new folder with the same name as the game object that was clicked on
         AssetDatabase.CreateFolder(ENTITIES_FOLDER, Selection.activeGameObject.name);
 

@@ -4,90 +4,144 @@ using UnityEngine;
 
 public class NavNode
 {
-    public static float DECAY_RATE = 0.01f;
+    public static float VECTOR_PRECISION = 0.000000001f;
+    public static int NAVIGATION_LAYER = 3;
+    public static Vector3[] UNIT_VECTORS = {Vector3.right, Vector3.forward, Vector3.left, Vector3.back};
     public static int EAST = 0;
     public static int NORTH = 1;
     public static int WEST = 2;
     public static int SOUTH = 3;
-    private GameObject _worldspaceNode;
-    private MeshRenderer _nodeRenderer;
+    public Vector3 worldPosition;
     public NavNode[] neighbors;
-    public float [] displacements;
     public bool[] isBoundary;
+    public bool inCollider = false;
+    private int _nNeighbors = 0;
 
     public float scalarField = 0f;
     public Vector3 vectorField = Vector3.zero;
 
-    private float _nextScalarField = 0f;
-    private Vector3 _nextVectorField = Vector3.zero;
+    public float nextScalarField = 0f;
+    public Vector3 nextVectorField;
 
-    private Color _originalColor;
+    public float charge;
 
-    public void CreateWorldspaceNode(GameObject nodeObject)
+    public void BuildBoundaries(Vector2 nodeDistance, float graphHeight)
     {
-        _worldspaceNode = nodeObject;
+        // Send rays in all 4 directions, if the ray encounters a collider that is closer than the node distance
+        // then there is a boundary in that direction
 
-        _nodeRenderer = nodeObject.GetComponent<MeshRenderer>();
-        _originalColor = _nodeRenderer.material.color;
-    }
+        float maxDistance;
+        int navigationLayer = LayerMask.GetMask("Navigation");
 
-    public void VisualizeField(bool showVisualization)
-    {
-        if(showVisualization){
-            _nodeRenderer.enabled = true;
-        } else {
-            _nodeRenderer.enabled = false;
+        Vector3 localOrigin = worldPosition + graphHeight * Vector3.up;
+
+
+        for(int direction = 0; direction < 4; direction++){
+
+            if(direction == 0 || direction == 2){
+                maxDistance = nodeDistance.x;
+            } else {
+                maxDistance = nodeDistance.y;
+            }
+
+            if(Physics.Raycast(localOrigin, UNIT_VECTORS[direction], maxDistance, navigationLayer)){
+                isBoundary[direction] = true;
+            } else if(Physics.Raycast(localOrigin + UNIT_VECTORS[direction], -UNIT_VECTORS[direction], maxDistance, navigationLayer)){
+                isBoundary[direction] = true;
+                inCollider = true;
+            } else {
+                isBoundary[direction] = false;
+                _nNeighbors++;
+            }
+
         }
+        
     }
 
     public void PrepareField()
     {
-        // the scalar value is the weighted average of the neighbors
-        _nextScalarField = 0f;
+        
         float[] neighborhoodField = new float[4];
+        float neighborAverage = 0f;
+        Vector3 gradient = Vector3.zero;
 
+        
+        if(_nNeighbors > 0){
 
-        for(int direction = 0; direction < 4; direction++){
-            if(isBoundary[direction]){
-                // BOUNDARY CONDITION directly implemented
-                neighborhoodField[direction] = 0f;
-            } else {
-               neighborhoodField[direction] = neighbors[direction].scalarField;
+            for(int direction = 0; direction < 4; direction++){
+               
+                if(isBoundary[direction] || neighbors[direction] == null){
+                    // BOUNDARY CONDITION directly implemented (choose one)
+                    
+                    // the partial derivative at the boundary is 0
+                    //neighborhoodField[direction] = neighborhoodField[(direction + 2) % 4];
+                    
+                    // the field at the boundary is 0
+                    neighborhoodField[direction] = 0f;
+
+                } else {
+                    // this neighbor does exist
+                    neighborhoodField[direction] = neighbors[direction].scalarField;
+                    neighborAverage += neighborhoodField[direction];
+                }
             }
+
+            nextScalarField = (charge + neighborAverage) / (_nNeighbors + 1);
+            
+
+            // calculate the gradient of the scalar field as well (this will create the vector field)
+            gradient.x = neighborhoodField[EAST] - neighborhoodField[WEST];
+            gradient.z = neighborhoodField[NORTH] - neighborhoodField[SOUTH];
+
+            if(gradient.sqrMagnitude >= VECTOR_PRECISION){
+                nextVectorField = gradient;
+            } else {
+                nextVectorField = vectorField;
+            }
+
+        }
+    }
+
+    public void DrawField(float visualizationHeight)
+    {
+        Vector3 localOrigin = worldPosition + visualizationHeight * Vector3.up;
+
+        Debug.DrawLine(localOrigin, localOrigin + scalarField * Vector3.up, Color.green);
+
+        if(vectorField.magnitude > 0f)
+        {
+            Debug.DrawLine(localOrigin, localOrigin + vectorField / (2f * vectorField.magnitude), Color.blue);
         }
 
-        // average the neighborhood field to set value of this node's scalar field value
+        // draw a line toward each neighbor
         
-        _nextScalarField = (neighborhoodField[EAST] +
-                            neighborhoodField[NORTH] + 
-                            neighborhoodField[WEST] + 
-                            neighborhoodField[SOUTH]) / 4f;
-
-        // decay the field (bring it closer to 0)
-        _nextScalarField *= (1f - DECAY_RATE);
-        
-
+        for(int direction = 0; direction < 4; direction++){
+            if(isBoundary[direction]){
+                Debug.DrawLine(localOrigin, localOrigin + 0.5f * UNIT_VECTORS[direction], Color.red);
+            } else {
+                Debug.DrawLine(localOrigin, localOrigin + 0.5f * UNIT_VECTORS[direction], Color.white);
+            }
+        }
         
 
-        // calculate the gradient of the scalar field as well (this will create the vector field)
-        _nextVectorField.x = ( neighborhoodField[EAST] - neighborhoodField[WEST] ) / ( displacements[EAST] + displacements[WEST] );
-        _nextVectorField.z = ( neighborhoodField[NORTH] - neighborhoodField[SOUTH] ) / ( displacements[NORTH] + displacements[SOUTH] );
         
+
+       
     }
 
     public void UpdateField()
     {
-        scalarField = _nextScalarField;
-        vectorField = _nextVectorField;
+        scalarField = nextScalarField;
+        vectorField = nextVectorField;
 
-        //_nodeRenderer.material.color = Vector3.Dot(vectorField, referenceFrame) * _originalColor;
-        _nodeRenderer.material.color = scalarField * _originalColor;
-        
+        charge = 0f;    // charge will be reset every time by the NavigationGraph
+        nextScalarField = 0f;
+        nextVectorField = Vector3.zero;
     }
 
     public void UpdateField(float forcedValue)
     {
-        _nextScalarField = forcedValue;
+        nextScalarField = forcedValue;
         UpdateField();
     }
 
@@ -98,7 +152,11 @@ public class NavNode
     {
         neighbors = new NavNode[4];
         isBoundary = new bool[4];
-        displacements = new float[4];
+        charge = 0f;
+        nextVectorField = Vector3.zero;
+        scalarField = 0f;
+        nextScalarField = 0f;
+        _nNeighbors = 0;
 
         // assign this NavNode to its proper place in the graph
         graph[position.x][position.y] = this;
@@ -120,22 +178,6 @@ public class NavNode
 
     }
 
-    public void SetWorldPosition(Vector3 position)
-    {
-        _worldspaceNode.transform.position = position;
-    }
-
-    public void CalculateNeigborDisplacements()
-    {
-        for(int direction = 0; direction < 4; direction++){
-            if(!isBoundary[direction]){
-                displacements[direction] = (neighbors[direction]._worldspaceNode.transform.position - 
-                                            _worldspaceNode.transform.position).magnitude;
-            } else {
-                displacements[direction] = 0f;
-            }
-        }
-    }
 
 
 

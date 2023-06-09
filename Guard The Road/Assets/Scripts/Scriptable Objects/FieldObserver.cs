@@ -6,8 +6,9 @@ using UnityEngine;
 public class FieldObserver : ScriptableObject
 {
     public Vector3 Position;
+    public float Charge;
     public float ScalarField;
     public Vector3 VectorField;
-    public bool CanChangeScalarField;
+    public NavNode lastNode;
     
 }

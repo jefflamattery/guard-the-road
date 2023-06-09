@@ -5,7 +5,6 @@ using UnityEngine;
 public class Motor : MonoBehaviour, IMotionObserver
 {
     [SerializeField] private MotionObserver _motion;
-    [SerializeField] private float _speed;
     [SerializeField] private float _turningRate;
     
     public MotionObserver Motion{
@@ -31,15 +30,22 @@ public class Motor : MonoBehaviour, IMotionObserver
 
     IEnumerator ExecuteCourse()
     {
+        Vector3 heading, course;
         while(true)
         {
+            heading = _motion.Heading;
+            course = _motion.Course;
+
             // convert a course into a velocity
-            if(_motion.Course.magnitude > 0f){
+            if(course.magnitude > 0f){
+
+                course.Normalize();
                 
                 // the angle that the motor should turn depends on which direction the heading would need to rotate to line up with the course.
                 // that angle is the orthogonality of heading and course, multiplied by some small constant angle turningRate
-                _motion.Heading = Quaternion.Euler(0f, _turningRate * Vector3.Dot(Vector3.Cross(_motion.Heading, _motion.Course), Vector3.up), 0f) * _motion.Heading;
-                _motion.Speed = _speed;
+                _motion.Heading = Quaternion.Euler(0f, _turningRate * Vector3.Dot(Vector3.Cross(heading, course), Vector3.up), 0f) * heading;
+                _motion.Speed = _motion.CourseSpeed;
+
             } else {
                 _motion.Speed = 0f;
             }

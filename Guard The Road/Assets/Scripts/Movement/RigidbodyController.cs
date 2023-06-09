@@ -14,11 +14,14 @@ public class RigidbodyController : MonoBehaviour, IMotionObserver
 
     void FixedUpdate()
     {
+        Vector3 velocity;
+
         // update the information about the rigid body's actual motion
         _motion.Position = _root.transform.position;
 
         // move the rigidbody
-        _root.velocity = _motion.Velocity;
+        velocity = _motion.Velocity + _root.velocity.y * Vector3.up;
+        _root.velocity = velocity;
         _root.angularVelocity = Vector3.zero;
 
         // ensure proper rotation of the rigidbody
