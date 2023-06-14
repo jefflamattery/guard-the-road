@@ -26,13 +26,21 @@ public class HUDManager : MonoBehaviour
         {
             toggle.isOn = false;
         }
+    }
 
-
+    public void ToggleRandomWalk(Toggle value)
+    {
+        _randomWalk.isSpawned = value.isOn;
     }
 
     public void ToggleGradientAscent(Toggle value)
     {
         _gradientAscent.isSpawned = value.isOn;
+    }
+
+    public void ToggleAStar(Toggle value)
+    {
+
     }
 
 }

@@ -12,6 +12,11 @@ public class RigidbodyController : MonoBehaviour, IMotionObserver
         set=>_motion = value;
     }
 
+    void Awake()
+    {
+        _motion.Heading = _root.transform.rotation * Vector3.forward;
+    }
+
     void FixedUpdate()
     {
         Vector3 velocity;
