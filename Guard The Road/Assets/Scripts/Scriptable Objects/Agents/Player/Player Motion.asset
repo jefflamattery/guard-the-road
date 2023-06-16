@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player Motion
   m_EditorClassIdentifier: 
   CourseSpeed: 5
-  Position: {x: -15.370175, y: 0.010876656, z: 4.7442174}
-  Course: {x: -0, y: 0, z: 0}
-  Heading: {x: 0.9974962, y: 0, z: 0.07073797}
+  Position: {x: -3.4485164, y: 0.010874391, z: 9.179787}
+  Course: {x: 0, y: 0, z: 0}
+  Heading: {x: 0.8709424, y: 0, z: 0.4913856}
   Speed: 0

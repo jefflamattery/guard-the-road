@@ -30,7 +30,9 @@ public class ActionManager : MonoBehaviour
     {
         Pause();
         _isActing = true;
+        definition.PreAction();
         yield return StartCoroutine(definition.Action());
+        definition.PostAction();
         _isActing = false;
         Resume();
     }
@@ -50,19 +52,21 @@ public class ActionManager : MonoBehaviour
     private void Resume()
     {
         // action can only be resumed if it isn't currently running
-        if(!_isActing){
-            if(_isQueued){
-                _isQueued = false;
-                _active = StartCoroutine(DiscreteAction(_queued));
-            } else if(_default != null) {
-                _active = StartCoroutine(_default.Action());
-            }
+        if(_isActing){return;}
+
+
+        if(_isQueued){
+            _isQueued = false;
+            _active = StartCoroutine(DiscreteAction(_queued));
+        } else if(_default != null) {
+            _active = StartCoroutine(_default.Action());
         }
+
     }
 
     void Awake()
     {
-        // find all Actions attached to this gameObject and give them a reference to this Action Manager
+        // find all Actions attached to this gameObject and inject a reference to this Action Manager
         ActionDefinition[] actions = GetComponentsInChildren<ActionDefinition>();
 
         foreach(ActionDefinition action in actions)

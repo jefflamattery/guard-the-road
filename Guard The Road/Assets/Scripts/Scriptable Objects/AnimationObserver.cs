@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Scriptable Object/Animation Observer")]
-public class AnimationObserver : ScriptableObject
+public class AnimationObserver : Observer
 {
     private AnimationDriver _driver;
     
@@ -37,6 +37,24 @@ public class AnimationObserver : ScriptableObject
             _driver.SetFloat(name, value);
         }
     }
+
+    public override Observer Clone()
+    {
+        AnimationObserver clone = ScriptableObject.CreateInstance<AnimationObserver>();
+        return clone;
+    }
+
+    public override void Inject(GameObject agent)
+    {
+        IAnimationObserver[] observers = agent.GetComponentsInChildren<IAnimationObserver>();
+
+        foreach(IAnimationObserver observer in observers)
+        {
+            observer.Animation = this;
+        }
+    }
+
+    
 
 
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Object/Motion Observer")]
-public class MotionObserver : ScriptableObject
+public class MotionObserver : Observer
 {
     public float CourseSpeed = 0f;
     
@@ -15,6 +15,29 @@ public class MotionObserver : ScriptableObject
 
     public Vector3 Velocity{
         get=> Speed * Heading;
+    }
+
+    public override Observer Clone()
+    {
+        MotionObserver clone = ScriptableObject.CreateInstance<MotionObserver>();
+
+        clone.CourseSpeed = CourseSpeed;
+        clone.Position = Position;
+        clone.Course = Course;
+        clone.Heading = Heading;
+        clone.Speed = Speed;
+
+        return clone;
+    }
+
+    public override void Inject(GameObject agent)
+    {
+        IMotionObserver[] slots = agent.GetComponentsInChildren<IMotionObserver>();
+
+        foreach(IMotionObserver slot in slots)
+        {
+            slot.Motion = this;
+        }
     }
 
 }

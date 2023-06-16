@@ -70,12 +70,12 @@
                 },
                 {
                     "name": "Slot1",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "634bbac6-2ba4-43c2-a81f-867d8a6c84e3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [

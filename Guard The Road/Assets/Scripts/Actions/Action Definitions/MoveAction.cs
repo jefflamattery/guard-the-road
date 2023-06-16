@@ -2,10 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : ActionDefinition
+public class MoveAction : ActionDefinition, IMotionObserver, IAnimationObserver
 {
     [SerializeField] private MotionObserver _motion;
+    public MotionObserver Motion{
+        get=>_motion;
+        set=>_motion = value;
+    }
     [SerializeField] private AnimationObserver _animation;
+    public AnimationObserver Animation{
+        get=>_animation;
+        set=>_animation = value;
+    }
     [SerializeField] private float _turningRate;
     [SerializeField] private string _runningParameter;
     [SerializeField] private string _speedParameter;
@@ -14,6 +22,13 @@ public class MoveAction : ActionDefinition
     {
         // this is a continuous action and is not triggered by an action slot
         // start this action right away
+        if(Manager != null){
+            Manager.SetDefault(this);
+        }
+    }
+
+    void Start()
+    {
         Manager.SetDefault(this);
     }
 

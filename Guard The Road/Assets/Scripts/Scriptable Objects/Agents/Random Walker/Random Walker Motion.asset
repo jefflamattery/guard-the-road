@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9631ad03594e44ca2e150a998e9877, type: 3}
   m_Name: Random Walker Motion
   m_EditorClassIdentifier: 
-  CourseSpeed: 4
+  CourseSpeed: 0
   Position: {x: 0, y: 0, z: 0}
   Course: {x: 0, y: 0, z: 0}
   Heading: {x: 0, y: 0, z: 1}

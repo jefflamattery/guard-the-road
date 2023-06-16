@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Object/Action Slot Observer")]
-public class ActionSlotObserver : ScriptableObject
+[CreateAssetMenu(menuName = "Scriptable Object/Action Slot")]
+public class ActionSlot : ScriptableObject
 {
     private List<ActionDefinition> _listeners;
+
+    public bool isTriggered;
     
     void Awake()
     {
@@ -23,6 +25,7 @@ public class ActionSlotObserver : ScriptableObject
     }
 
     public void Trigger(){
+        isTriggered = true;
         foreach(ActionDefinition listener in _listeners)
         {
             listener.TriggerAction();

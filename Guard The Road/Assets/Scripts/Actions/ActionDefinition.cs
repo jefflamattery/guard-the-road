@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ActionDefinition : MonoBehaviour
 {
-    [SerializeField] private ActionSlotObserver _slot;
-    public ActionSlotObserver Slot{
+    [SerializeField] private ActionSlot _slot;
+    public ActionSlot Slot{
         set{
             _slot = value;
             _slot.Assign(this);
@@ -35,7 +35,9 @@ public class ActionDefinition : MonoBehaviour
 
     public virtual void TriggerAction()
     {
-        Manager.Enqueue(this);
+        if(Manager!=null){
+            Manager.Enqueue(this);
+        }
     }
 
     public virtual void Interrupt(){}
