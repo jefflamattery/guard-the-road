@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9631ad03594e44ca2e150a998e9877, type: 3}
   m_Name: GA Walker Motion
   m_EditorClassIdentifier: 
-  CourseSpeed: 0
-  Position: {x: 0, y: 0, z: 0}
-  Course: {x: 0, y: 0, z: 0}
-  Heading: {x: 0, y: 0, z: 1}
-  Speed: 0
+  courseSpeed: 0
+  turningRate: 10
+  position: {x: 0, y: 0, z: 0}
+  course: {x: 0, y: 0, z: 0}
+  heading: {x: 0, y: 0, z: 1}
+  speed: 0

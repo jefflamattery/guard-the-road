@@ -70,11 +70,11 @@
                 },
                 {
                     "name": "Slot1",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "634bbac6-2ba4-43c2-a81f-867d8a6c84e3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "",
                     "initialStateCheck": true
                 }
             ],

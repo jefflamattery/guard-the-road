@@ -7,9 +7,11 @@ public class WeaponObserver : Observer
 {
     public GameObject weaponModel;
     
-    public float hitDamage;
-    public Vector3 hitForce;
-    public int maximumTargets;
+    public float hitDamage = 1f;
+    public float attackSpeed = 1f;
+    public Vector3 hitForce = Vector3.zero;
+    public int maximumTargets = 1;
+    
     
     public override Observer Clone()
     {

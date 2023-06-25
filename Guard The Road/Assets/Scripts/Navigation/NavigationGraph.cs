@@ -116,15 +116,15 @@ public class NavigationGraph : MonoBehaviour
         // go through the list of observers and update information accordingly
         foreach(FieldObserver observer in _observers){
             
-            if(!GetNode(observer.Position, out closest)){
+            if(!GetNode(observer.position, out closest)){
                 closest = observer.lastNode;
             }
 
             if(closest != null){
                 // set the charge and measure the field
-                closest.charge = observer.Charge;
-                observer.ScalarField = closest.scalarField;
-                observer.VectorField = closest.vectorField;
+                closest.charge = observer.charge;
+                observer.scalarField = closest.scalarField;
+                observer.vectorField = closest.vectorField;
 
                 observer.lastNode = closest;
             }
@@ -154,9 +154,6 @@ public class NavigationGraph : MonoBehaviour
         {
             if(!_observers.Contains(component.Field)){
                 _observers.Add(component.Field);
-
-                // clear the vector component of the field
-                component.Field.VectorField = Vector3.zero;
             }
         }
         

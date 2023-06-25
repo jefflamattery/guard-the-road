@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385264aff13bced418cf7ef254918299, type: 3}
   m_Name: Player Field
   m_EditorClassIdentifier: 
-  Position: {x: 0, y: 0, z: 0}
-  Charge: 100
-  ScalarField: 0
-  VectorField: {x: 0, y: 0, z: 0}
+  position: {x: 0, y: 0, z: 0}
+  charge: 100
+  scalarField: 0
+  vectorField: {x: 0, y: 0, z: 0}

@@ -30,6 +30,8 @@ public class CloneTool
         CreateObserverAsset(observerManager.Animation, assetFolder + "/" + name + " Animation.asset");
         CreateObserverAsset(observerManager.Weapon, assetFolder + "/" + name + " Weapon.asset");
         CreateObserverAsset(observerManager.Vitals, assetFolder + "/" + name + " Vitals.asset");
+        CreateObserverAsset(observerManager.Agent, assetFolder + "/" + name + " Agent.asset");
+        CreateObserverAsset(observerManager.Action,  assetFolder + "/" + name + " Action.asset");
         ///////////////////////////////////////////
 
         observerManager.InjectObservers();

@@ -15,5 +15,6 @@ MonoBehaviour:
   weaponModel: {fileID: 1891074724505988, guid: f124a282fc554ba40aabfad1c3f4d7a9,
     type: 3}
   hitDamage: 1
+  attackSpeed: 1
   hitForce: {x: 0, y: 0, z: 0}
   maximumTargets: 1

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9631ad03594e44ca2e150a998e9877, type: 3}
   m_Name: Player Motion
   m_EditorClassIdentifier: 
-  CourseSpeed: 5
-  Position: {x: -3.4485164, y: 0.010874391, z: 9.179787}
-  Course: {x: 0, y: 0, z: 0}
-  Heading: {x: 0.8709424, y: 0, z: 0.4913856}
-  Speed: 0
+  courseSpeed: 5
+  turningRate: 10
+  position: {x: 0, y: 0, z: 0}
+  course: {x: 0, y: 0, z: 0}
+  heading: {x: 0, y: 0, z: 1}
+  speed: 0

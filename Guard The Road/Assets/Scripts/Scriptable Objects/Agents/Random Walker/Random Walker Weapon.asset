@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Random Walker Weapon
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 0}
-  hitDamage: 0
+  hitDamage: 1
+  attackSpeed: 1
   hitForce: {x: 0, y: 0, z: 0}
-  maximumTargets: 0
+  maximumTargets: 1

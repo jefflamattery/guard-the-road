@@ -9,6 +9,7 @@ public class VitalsObserver : Observer
     public float hitpoints;
     public float maximumHitpoints;
 
+
     public override Observer Clone()
     {
         VitalsObserver clone = ScriptableObject.CreateInstance<VitalsObserver>();

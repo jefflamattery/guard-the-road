@@ -2,44 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionDefinition : MonoBehaviour
+public class ActionDefinition : MonoBehaviour, IActionObserver
 {
-    [SerializeField] private ActionSlot _slot;
-    public ActionSlot Slot{
-        set{
-            _slot = value;
-            _slot.Assign(this);
-        }
-        get=>_slot;
+    [SerializeField] private ActionObserver _action;
+    
+    public ActionObserver Action{
+        get=>_action;
+        set=>_action = value;
     }
-    private ActionManager _manager;
-    public ActionManager Manager{
-        set=>_manager = value;
-        get=>_manager;
+    [SerializeField] private bool _canInterrupt = false;
+    public bool CanInterrupt{
+        get=>_canInterrupt;
+        set=>_canInterrupt = value;
     }
 
-    public virtual void Awake()
+    private bool _isActing;
+    public bool IsActing{
+        get=>_isActing;
+    }
+
+    private Coroutine _actionHandle;
+
+    public void StartAction()
     {
-        if(_slot != null){
-            _slot.Assign(this);
-        }
+        _actionHandle = StartCoroutine(ActionPlayer());
     }
 
-    public virtual IEnumerator Action()
+    public void Interrupt()
     {
-        return null;
+        if(_actionHandle != null){ StopCoroutine(_actionHandle); }
+
+        PostAction();
+        _isActing = false;
     }
 
-    public virtual void PreAction(){}
+
+    IEnumerator ActionPlayer()
+    {
+        _isActing = true;
+        yield return StartCoroutine(Act());
+        PostAction();
+        _isActing = false;
+        _action.Release();
+    }
+
+    public virtual IEnumerator Act()
+    {
+        return default;
+    }
+
     public virtual void PostAction(){}
-
-    public virtual void TriggerAction()
-    {
-        if(Manager!=null){
-            Manager.Enqueue(this);
-        }
-    }
-
-    public virtual void Interrupt(){}
 
 }

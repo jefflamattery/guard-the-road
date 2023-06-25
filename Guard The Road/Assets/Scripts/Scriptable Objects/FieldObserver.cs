@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Object/Field Observer")]
 public class FieldObserver : Observer
 {
-    public Vector3 Position;
-    public float Charge;
-    public float ScalarField;
-    public Vector3 VectorField;
+    public Vector3 position;
+    public float charge;
+    public float scalarField;
+    public Vector3 vectorField;
     public NavNode lastNode;
 
 
@@ -17,11 +17,11 @@ public class FieldObserver : Observer
     {
         FieldObserver clone = ScriptableObject.CreateInstance<FieldObserver>();
 
-        clone.Position = Position;
-        clone.Charge = Charge;
-        clone.ScalarField = ScalarField;
-        clone.VectorField = VectorField;
-        clone.lastNode = lastNode;
+        clone.position = position;
+        clone.charge = charge;
+        clone.scalarField = 0f;
+        clone.vectorField = Vector3.zero;
+        clone.lastNode = null;
 
         return clone;
     }

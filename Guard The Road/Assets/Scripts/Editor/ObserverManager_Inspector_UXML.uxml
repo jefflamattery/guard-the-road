@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <uie:PropertyField binding-path="_motion" label="Motion" name="MotionObserver" />
+    <uie:PropertyField name="FieldObserver" binding-path="_field" label="Field" />
+    <uie:PropertyField name="AnimationObserver" binding-path="_animation" label="Animation" />
+    <uie:PropertyField name="WeaponObserver" binding-path="_weapon" label="Weapon" />
+    <uie:PropertyField name="VitalsObserver" binding-path="_vitals" label="Vitals" />
+    <uie:PropertyField name="AgentObserver" binding-path="_agent" label="Agent" />
+    <uie:PropertyField name="ActionObserver" binding-path="_action" label="Action" />
+</ui:UXML>

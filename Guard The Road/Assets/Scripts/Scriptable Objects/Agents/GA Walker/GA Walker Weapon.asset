@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495cef3f5ab6bf54f83bf0dbf2ae39d8, type: 3}
   m_Name: GA Walker Weapon
   m_EditorClassIdentifier: 
-  weaponModel: {fileID: 0}
-  hitDamage: 0
+  weaponModel: {fileID: 1720152226819544, guid: 133f932775f5bff43a09e7bcb2f346dc,
+    type: 3}
+  hitDamage: 1
+  attackSpeed: 1
   hitForce: {x: 0, y: 0, z: 0}
-  maximumTargets: 0
+  maximumTargets: 1

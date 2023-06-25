@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GradientAscent
   m_EditorClassIdentifier: 
   agentName: Gradient Ascent Walkers
-  nSpawned: 0
-  spawnTarget: 20
-  isSpawned: 0
+  nSpawned: 10
+  spawnTarget: 50
+  isSpawned: 1
